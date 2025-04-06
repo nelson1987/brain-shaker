@@ -1,9 +1,10 @@
 using Brainshaker.Api.MIddlewares;
 using Brainshaker.App;
+using Brainshaker.Infra;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.RegisterCqrs();
+builder.Services.AddInfra(builder.Configuration);
 // Add services to the container.
 
 builder.Services.AddControllers();

@@ -1,19 +1,18 @@
 ﻿using Brainshaker.Domain.Repositories;
+using Brainshaker.Infra.Database;
 
 namespace Brainshaker.Infra.Repositories;
 
-public abstract class AbstractRepository<TEntity> : IRepository<TEntity> where TEntity : class
+public abstract class AbstractRepository<TEntity>(DatabaseContext context) : IRepository<TEntity> where TEntity : class
 {
-    public Task AddAsync(TEntity entity)
+    public async Task AddAsync(TEntity entity)
     {
-        return Task.CompletedTask;
-        // throw new NotImplementedException();
+        await context.AddAsync(entity);
+        await context.SaveChangesAsync();
     }
 
-    public Task<TEntity?> GetByIdAsync(Guid id)
+    public async Task<TEntity?> GetByIdAsync(Guid id)
     {
-        return Task.FromResult((TEntity)null);
-        //return default;
-        //throw new NotImplementedException();
+        return await context.FindAsync<TEntity>(id);
     }
 }

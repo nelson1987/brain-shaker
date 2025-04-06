@@ -15,7 +15,7 @@ public class UsersController(IQueryDispatcher queryDispatcher, ICommandDispatche
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetUserByIdQuery(id);
-        var user = await queryDispatcher.Dispatch<GetUserByIdQuery, User?>(query, cancellationToken);
+        var user = await queryDispatcher.Dispatch<GetUserByIdQuery, Usuario?>(query, cancellationToken);
         if (user == null)
             return NotFound();
 
