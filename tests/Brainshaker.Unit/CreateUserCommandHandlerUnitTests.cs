@@ -50,3 +50,43 @@ public class CreateUserCommandHandlerUnitTests
         Assert.Equal(result.Error, CreateUsuarioCommandErrors.UsernameTooShort);
     }
 }
+
+/*
+ * [POST] api/categorias
+ * {
+ *  "CategoriaId" : 1,
+ *  "Nome": "Banana",
+ *  "ValorCompra": 4.00,
+ *  "ValorMercado": 7.00
+ * }
+ */
+
+#region Fase 1 - Admin insere produto
+
+// [Admin] Cadastrar Categoria
+// [Admin] Cadastrar Produto
+// [Aplicacao] Cadastrar Usuario
+
+#endregion
+
+#region Fase 2 - Cliente adicionar itens no carrinho
+
+#endregion
+
+#region Fase 3 - Admin - Fechou a onde
+
+#endregion
+
+#region Fase 4 - Criacao Historico
+
+#endregion
+
+// [Admin] Cadastrar Categoria
+// [Admin] Cadastrar Produto
+// [Aplicacao] Iniciar a Onda
+// [Cliente] Cadastrar Compra
+// [Aplicacao] Fechar a Onda
+// [Admin] Visualizar Pre Compra
+// [Admin] Cadastrar Abastecimento
+// [Aplicacao] Notificar Cliente
+// [Cliente] Pagar Compra

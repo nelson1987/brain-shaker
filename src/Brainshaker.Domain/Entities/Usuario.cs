@@ -54,11 +54,24 @@ public class Categoria
 
 public class Produto
 {
-    public Guid Id { get; set; }
-    public Categoria Categoria { get; set; }
-    public string Nome { get; set; }
-    public decimal CompraPorUnidade { get; set; }
-    public decimal MercadoPorUnidade { get; set; }
+    protected Produto()
+    {
+            
+    }
+
+    public Produto(Guid id, Categoria categoria, string nome, decimal compraPorUnidade, decimal mercadoPorUnidade)
+    {
+        Id = id;
+        Categoria = categoria;
+        Nome = nome;
+        CompraPorUnidade = compraPorUnidade;
+        MercadoPorUnidade = mercadoPorUnidade;
+    }
+    public Guid Id { get; private set; }
+    public Categoria Categoria { get; private set; }
+    public string Nome { get; private set; }
+    public decimal CompraPorUnidade { get; private set; }
+    public decimal MercadoPorUnidade { get; private set; }
 }
 
 #endregion
@@ -96,17 +109,24 @@ public class Compra
 
 public class PreCompra
 {
-    public List<Compra> Carrinhos { get; set; }
-    public int QuantidadePorPacote { get; set; }
+    protected PreCompra()
+    {
+        
+    }
+
+    public PreCompra(List<Compra> carrinhos, int quantidadePorPacote)
+    {
+        Carrinhos = carrinhos;
+        QuantidadePorPacote = quantidadePorPacote;
+    }
+    public List<Compra> Carrinhos { get; private set; }
+    public int QuantidadePorPacote { get; private set; }
 
     public int NumeroDePacotes
     {
         get
         {
             var total = Carrinhos.Sum(y => y.Itens.Sum(x => x.Quantidade));
-            var quantidadePacote = Convert.ToDouble(QuantidadePorPacote);
-            var totalPacote = Convert.ToDouble(total) / quantidadePacote;
-            var arredondamento = Math.Round(totalPacote, MidpointRounding.ToPositiveInfinity);
             return Convert.ToInt32(Math.Round(Convert.ToDouble(total) / Convert.ToDouble(QuantidadePorPacote),
                 MidpointRounding.ToPositiveInfinity));
         }
@@ -123,25 +143,53 @@ public class PreCompra
 }
 
 public class Abastecimento
-{
-    public Produto Produto { get; set; }
-    public int Quantidade { get; set; }
-    public decimal ValorCompra { get; set; }
-    public decimal ValorMercado { get; set; }
-    public decimal Frete { get; set; }
+{    protected Abastecimento()
+    {
+        
+    }
+
+    public Abastecimento(Produto produto, int quantidade, decimal valorCompra, decimal valorMercado, decimal frete)
+    {
+        Produto = produto;
+        Quantidade = quantidade;
+        ValorCompra = valorCompra;
+        ValorMercado = valorMercado;
+        Frete = frete;
+    }
+    public Produto Produto { get; private set; }
+    public int Quantidade { get; private set; }
+    public decimal ValorCompra { get; private set; }
+    public decimal ValorMercado { get; private set; }
+    public decimal Frete { get; private set; }
 }
 
 public class Onda
 {
-    public Abastecimento Abastecimento { get; set; }
-    public Item Itens { get; set; }
-    public decimal UltimoValorCadastrado => Itens.Produto.CompraPorUnidade;
-    public decimal ValorPorUnidadeKg => Abastecimento.ValorCompra / Itens.Quantidade;
-    public decimal ValorDeCompra => Itens.Estimado;
-    public decimal ValorDeMercadoPorUnidadeKg => Abastecimento.ValorMercado;
-    public decimal ValorTotalMercado => ValorDeMercadoPorUnidadeKg * Itens.Quantidade;
+    protected Onda()
+    {
+        Compras = new List<Compra>();
+    }
+
+    public Onda(Abastecimento compraAdministrador, List<Compra> compras)
+    {
+        CompraAdministrador = compraAdministrador;
+        Compras = compras;
+    }
+    public Abastecimento CompraAdministrador { get; private set; }
+    public List<Compra> Compras { get; private set; }
+    public decimal UltimoValorCadastrado => this.Compras.Sum(x => x.Itens.Sum(y => y.Produto.CompraPorUnidade));
+
+    public decimal ValorPorUnidadeKg =>
+        this.CompraAdministrador.ValorCompra / this.Compras.Sum(x => x.Itens.Sum(y => y.Quantidade));
+
+    public decimal ValorDeCompra => this.Compras.Sum(x => x.Itens.Sum(y => y.Estimado));
+    public decimal ValorDeMercadoPorUnidadeKg => this.CompraAdministrador.ValorMercado;
+
+    public decimal ValorTotalMercado =>
+        this.ValorDeMercadoPorUnidadeKg * this.Compras.Sum(x => x.Itens.Sum(y => y.Quantidade));
+
     public decimal Economia => ValorTotalMercado - ValorDeCompra;
-    public decimal Frete => Abastecimento.Frete;
+    public decimal Frete => CompraAdministrador.Frete;
     public decimal Lucro => Economia * 0.3M;
     public decimal Faturamento => Lucro + ValorDeCompra + Frete; // TODO: o frete deverá ser dividido
 
@@ -163,6 +211,17 @@ public class Onda
 
 public class HistoricoPedido
 {
+    protected HistoricoPedido()
+    {
+        
+    }
+
+    public HistoricoPedido(Produto produto, decimal valorCompraUnidade, decimal valorMercadoUnidade)
+    {
+        Produto = produto;
+        ValorCompraUnidade = valorCompraUnidade;
+        ValorMercadoUnidade = valorMercadoUnidade;
+    }
     public Produto Produto { get; set; }
     public decimal ValorCompraUnidade { get; set; }
     public decimal ValorMercadoUnidade { get; set; }

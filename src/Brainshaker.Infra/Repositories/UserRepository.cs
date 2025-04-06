@@ -17,6 +17,13 @@ public class CompraRepository(DatabaseContext context) : AbstractRepository<Comp
 {
 }
 
+public class AbastecimentoRepository(DatabaseContext context) : AbstractRepository<Abastecimento>(context)
+{
+}
+public class CategoriaRepository(DatabaseContext context) : AbstractRepository<Categoria>(context)
+{
+}
+
 public class HistoricoPedidoRepository(DatabaseContext context)
     : AbstractRepository<HistoricoPedido>(context), IHistoricoPedidoRepository
 {
