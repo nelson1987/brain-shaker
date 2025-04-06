@@ -1,5 +1,5 @@
 using Brainshaker.App.Commons;
-using Brainshaker.App.UseCases.CreateCategoria;
+using Brainshaker.App.UseCases.CreateCompra;
 using Brainshaker.App.UseCases.GetUser;
 using Brainshaker.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;

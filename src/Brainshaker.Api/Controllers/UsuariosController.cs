@@ -22,9 +22,9 @@ public class UsuariosController(IQueryDispatcher queryDispatcher, ICommandDispat
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create(CreateUsuarioCommand request, CancellationToken cancellationToken)
     {
-        var result = await commandDispatcher.Dispatch<CreateUserCommand, Result>(request, cancellationToken);
+        var result = await commandDispatcher.Dispatch<CreateUsuarioCommand, Result>(request, cancellationToken);
         if (result.IsFailure)
             return BadRequest(result.Error);
 
