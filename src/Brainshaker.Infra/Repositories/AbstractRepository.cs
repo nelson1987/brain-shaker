@@ -11,7 +11,7 @@ public abstract class AbstractRepository<TEntity>(DatabaseContext context) : IRe
         await context.SaveChangesAsync();
     }
 
-    public async Task<TEntity?> GetByIdAsync(Guid id)
+    public async Task<TEntity?> FindByIdAsync(Guid id)
     {
         return await context.FindAsync<TEntity>(id);
     }

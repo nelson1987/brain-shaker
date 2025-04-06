@@ -6,13 +6,13 @@ namespace Brainshaker.Unit;
 
 public class CreateUserCommandHandlerUnitTests
 {
-    private readonly CreateUserCommandHandler _handler;
-
     private readonly IFixture _fixture = new Fixture()
         .Customize(new AutoMoqCustomization
         {
             ConfigureMembers = true
         });
+
+    private readonly CreateUserCommandHandler _handler;
 
     public CreateUserCommandHandlerUnitTests()
     {
@@ -22,12 +22,12 @@ public class CreateUserCommandHandlerUnitTests
     [Fact]
     public async Task Dado_HandleAsync_Quando_UsuarioValido_Deve_Retornar_Dado()
     {
-        var command = new CreateUserCommand("string.Empty");
+        var command = new CreateUserCommand("Nome de Usuario");
         var result = await _handler.Handle(command, CancellationToken.None);
         Assert.NotNull(result);
         Assert.True(result.IsSuccess);
     }
-    
+
     [Fact]
     public async Task Dado_HandleAsync_Quando_NomeInvalido_Deve_Retornar_NomeInvalido()
     {
@@ -38,7 +38,7 @@ public class CreateUserCommandHandlerUnitTests
         Assert.NotNull(result.Error);
         Assert.Equal(result.Error, CreateUserCommandErrors.UsernameRequired);
     }
-    
+
     [Fact]
     public async Task Dado_HandleAsync_Quando_NomeMenorQue6_Deve_Retornar_NomeMenorQue6()
     {

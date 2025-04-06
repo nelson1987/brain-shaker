@@ -20,13 +20,22 @@ public class Usuario
         Nome = nome;
         Tipo = tipo;
     }
-    public static Usuario Cliente(string nome) => new Usuario(nome, Constants.UsuarioTipoCliente);
-    public static Usuario Administrador(string nome) => new Usuario(nome, Constants.UsuarioTipoAdministrador);
+
     public Guid Id { get; private set; }
 
     public string Nome { get; private set; }
 
     public string Tipo { get; private set; }
+
+    public static Usuario Cliente(string nome)
+    {
+        return new Usuario(nome, Constants.UsuarioTipoCliente);
+    }
+
+    public static Usuario Administrador(string nome)
+    {
+        return new Usuario(nome, Constants.UsuarioTipoAdministrador);
+    }
 }
 
 public class Categoria
@@ -57,10 +66,21 @@ public class Produto
 
 public class Item
 {
-    public Produto Produto { get; set; }
-    public int Quantidade { get; set; }
-    public decimal UltimoValorPorUnidade { get; set; }
-    public decimal Estimado => this.Produto.CompraPorUnidade * this.Quantidade;
+    protected Item()
+    {
+    }
+
+    public Item(Produto produto, int quantidade, decimal ultimoValorPorUnidade)
+    {
+        Produto = produto;
+        Quantidade = quantidade;
+        UltimoValorPorUnidade = ultimoValorPorUnidade;
+    }
+
+    public Produto Produto { get; }
+    public int Quantidade { get; }
+    public decimal UltimoValorPorUnidade { get; }
+    public decimal Estimado => Produto.CompraPorUnidade * Quantidade;
     public decimal PodeVariar => (UltimoValorPorUnidade - Produto.CompraPorUnidade) * Quantidade;
 }
 
@@ -83,8 +103,8 @@ public class PreCompra
         get
         {
             var total = Carrinhos.Sum(y => y.Itens.Sum(x => x.Quantidade));
-            double quantidadePacote = Convert.ToDouble(QuantidadePorPacote);
-            double totalPacote = Convert.ToDouble(total) / quantidadePacote;
+            var quantidadePacote = Convert.ToDouble(QuantidadePorPacote);
+            var totalPacote = Convert.ToDouble(total) / quantidadePacote;
             var arredondamento = Math.Round(totalPacote, MidpointRounding.ToPositiveInfinity);
             return Convert.ToInt32(Math.Round(Convert.ToDouble(total) / Convert.ToDouble(QuantidadePorPacote),
                 MidpointRounding.ToPositiveInfinity));
@@ -96,7 +116,7 @@ public class PreCompra
         get
         {
             var total = Carrinhos.Sum(y => y.Itens.Sum(x => x.Quantidade));
-            return (NumeroDePacotes * QuantidadePorPacote) - total;
+            return NumeroDePacotes * QuantidadePorPacote - total;
         }
     }
 }
@@ -114,11 +134,11 @@ public class Onda
 {
     public Abastecimento Abastecimento { get; set; }
     public Item Itens { get; set; }
-    public decimal UltimoValorCadastrado => this.Itens.Produto.CompraPorUnidade;
-    public decimal ValorPorUnidadeKg => this.Abastecimento.ValorCompra / this.Itens.Quantidade;
-    public decimal ValorDeCompra => this.Itens.Estimado;
-    public decimal ValorDeMercadoPorUnidadeKg => this.Abastecimento.ValorMercado;
-    public decimal ValorTotalMercado => this.ValorDeMercadoPorUnidadeKg * this.Itens.Quantidade;
+    public decimal UltimoValorCadastrado => Itens.Produto.CompraPorUnidade;
+    public decimal ValorPorUnidadeKg => Abastecimento.ValorCompra / Itens.Quantidade;
+    public decimal ValorDeCompra => Itens.Estimado;
+    public decimal ValorDeMercadoPorUnidadeKg => Abastecimento.ValorMercado;
+    public decimal ValorTotalMercado => ValorDeMercadoPorUnidadeKg * Itens.Quantidade;
     public decimal Economia => ValorTotalMercado - ValorDeCompra;
     public decimal Frete => Abastecimento.Frete;
     public decimal Lucro => Economia * 0.3M;

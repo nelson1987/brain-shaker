@@ -1,5 +1,4 @@
 using Brainshaker.App.Commons;
-using Brainshaker.App.UseCases;
 using Brainshaker.App.UseCases.CreateUser;
 using Brainshaker.App.UseCases.GetUser;
 using Brainshaker.Domain.Entities;
@@ -9,7 +8,7 @@ namespace Brainshaker.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UsersController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher) : ControllerBase
+public class UsuariosController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher) : ControllerBase
 {
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)

@@ -10,6 +10,12 @@ public class DatabaseContext : DbContext
     {
     }
 
+    #region Fase 4 - Criacao Historico
+
+    public DbSet<HistoricoPedido> HistoricosPedidos { get; set; }
+
+    #endregion
+
     #region Fase 1 - Admin insere produto
 
     public DbSet<Usuario> Usuarios { get; set; }
@@ -30,12 +36,6 @@ public class DatabaseContext : DbContext
     public DbSet<PreCompra> PreCompras { get; set; }
     public DbSet<Abastecimento> Abastecimentos { get; set; }
     public DbSet<Onda> Ondas { get; set; }
-
-    #endregion
-
-    #region Fase 4 - Criacao Historico
-
-    public DbSet<HistoricoPedido> HistoricosPedidos { get; set; }
 
     #endregion
 }
