@@ -27,7 +27,7 @@ public class CategoriaRepository(DatabaseContext context) : AbstractRepository<C
 public class HistoricoPedidoRepository(DatabaseContext context)
     : AbstractRepository<HistoricoPedido>(context), IHistoricoPedidoRepository
 {
-    public async Task<decimal> GetHistoricoByIdAsync(Guid id)
+    public async Task<decimal> GetHistoricoByIdAsync(int id)
     {
         List<HistoricoPedido> historicoPedido =
             await context.HistoricosPedidos.Where(x => x.Produto.Id == id).ToListAsync();

@@ -20,7 +20,7 @@ public class ProdutoUnitTests
     public void Dado_CadastrarProduto_Quando_DadosValidos_Deve_RetornarProduto()
     {
         Categoria fruta = new Categoria("Fruta");
-        Produto banana = new Produto(Guid.NewGuid(), fruta, "Banana", 4.00M, 7.00M);
+        Produto banana = new Produto(fruta, "Banana", 4.00M, 7.00M);
         Assert.Equal("Fruta", banana.Categoria.Nome);
         Assert.Equal("Banana", banana.Nome);
         Assert.Equal(4.00M, banana.CompraPorUnidade);

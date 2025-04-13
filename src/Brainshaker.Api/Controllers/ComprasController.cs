@@ -10,8 +10,8 @@ namespace Brainshaker.Api.Controllers;
 [Route("api/[controller]")]
 public class ComprasController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher) : ControllerBase
 {
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var query = new GetCompraByIdQuery(id);
         var result = await queryDispatcher.Dispatch<GetCompraByIdQuery, Usuario?>(query, cancellationToken);

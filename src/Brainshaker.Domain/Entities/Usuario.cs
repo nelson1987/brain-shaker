@@ -6,9 +6,15 @@ public static class Constants
     public static string UsuarioTipoAdministrador = "Administrador";
 }
 
+public class AuditableEntities
+{
+    public int Id { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
 #region Fase 1 - Admin insere produto
 
-public class Usuario
+public class Usuario : AuditableEntities
 {
     protected Usuario()
     {
@@ -16,13 +22,10 @@ public class Usuario
 
     public Usuario(string nome, string tipo)
     {
-        Id = Guid.NewGuid();
         Nome = nome;
         Tipo = tipo;
     }
-
-    public Guid Id { get; private set; }
-
+    
     public string Nome { get; private set; }
 
     public string Tipo { get; private set; }
@@ -38,7 +41,7 @@ public class Usuario
     }
 }
 
-public class Categoria
+public class Categoria : AuditableEntities
 {
     protected Categoria()
     {
@@ -52,22 +55,20 @@ public class Categoria
     public string Nome { get; private set; }
 }
 
-public class Produto
+public class Produto : AuditableEntities
 {
     protected Produto()
     {
             
     }
 
-    public Produto(Guid id, Categoria categoria, string nome, decimal compraPorUnidade, decimal mercadoPorUnidade)
+    public Produto(Categoria categoria, string nome, decimal compraPorUnidade, decimal mercadoPorUnidade)
     {
-        Id = id;
         Categoria = categoria;
         Nome = nome;
         CompraPorUnidade = compraPorUnidade;
         MercadoPorUnidade = mercadoPorUnidade;
     }
-    public Guid Id { get; private set; }
     public Categoria Categoria { get; private set; }
     public string Nome { get; private set; }
     public decimal CompraPorUnidade { get; private set; }
@@ -78,7 +79,7 @@ public class Produto
 
 #region Fase 2 - Cliente adicionar itens no carrinho
 
-public class Item
+public class Item : AuditableEntities
 {
     protected Item()
     {
@@ -98,7 +99,7 @@ public class Item
     public decimal PodeVariar => (UltimoValorPorUnidade - Produto.CompraPorUnidade) * Quantidade;
 }
 
-public class Compra
+public class Compra : AuditableEntities
 {
     public List<Item> Itens { get; set; }
 }
@@ -107,7 +108,7 @@ public class Compra
 
 #region Fase 3 - Admin - Fechou a onde
 
-public class PreCompra
+public class PreCompra : AuditableEntities
 {
     protected PreCompra()
     {
@@ -142,7 +143,7 @@ public class PreCompra
     }
 }
 
-public class Abastecimento
+public class Abastecimento : AuditableEntities
 {    protected Abastecimento()
     {
         
@@ -163,7 +164,7 @@ public class Abastecimento
     public decimal Frete { get; private set; }
 }
 
-public class Onda
+public class Onda : AuditableEntities
 {
     protected Onda()
     {
@@ -209,7 +210,7 @@ public class Onda
 
 #region Fase 4 - Criacao Historico
 
-public class HistoricoPedido
+public class HistoricoPedido : AuditableEntities
 {
     protected HistoricoPedido()
     {

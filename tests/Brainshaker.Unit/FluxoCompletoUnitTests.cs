@@ -8,7 +8,7 @@ public class FluxoCompletoUnitTests
     public void Test1()
     {
         Categoria fruta = new Categoria("Fruta");
-        Produto banana = new Produto(Guid.NewGuid(), fruta, "Banana", 4.00M, 7.00M);
+        Produto banana = new Produto(fruta, "Banana", 4.00M, 7.00M);
         /*
          RF 1 -
          Eu, como adminitrador e como aplicação

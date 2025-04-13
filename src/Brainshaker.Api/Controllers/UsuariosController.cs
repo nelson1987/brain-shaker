@@ -10,8 +10,8 @@ namespace Brainshaker.Api.Controllers;
 [Route("api/[controller]")]
 public class UsuariosController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher) : ControllerBase
 {
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
         var query = new GetUserByIdQuery(id);
         var user = await queryDispatcher.Dispatch<GetUserByIdQuery, Usuario?>(query, cancellationToken);
