@@ -27,6 +27,7 @@ public class IntegrationTests
 public class ResidentControllerTests : IAsyncLifetime
 {
     private WebApplicationFactory<Program> _factory;
+    private DatabaseContext _context;
     private MsSqlContainer _container;
 
     public async Task InitializeAsync()
@@ -64,11 +65,20 @@ public class ResidentControllerTests : IAsyncLifetime
 
         // Initialize database
         using var scope = _factory.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-        dbContext.Database.EnsureCreated();
-        dbContext.Database.Migrate();
+        _context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        _context.Database.EnsureCreated();
+        _context.Database.Migrate();
     }
 
+    [Fact]
+    public async Task Given_ValidUsuario_When_AddAsyncAndSaveChanges_Should_PersistInDatabase()
+    {
+        var usuario = new Usuario("nome", "tipo");
+        await _context.Usuarios.AddAsync(usuario);
+        await _context.SaveChangesAsync();
+        usuario.Id.Should().NotBe(0);
+    }
+    
     [Fact]
     public async Task Given_GetUsuarioById_When_UsuarioNotFound_Should_ReturnsNotFoundResult()
     {
